@@ -1,4 +1,4 @@
-﻿using LinqToExcel;
+using LinqToExcel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +30,7 @@ namespace Multiple_Excel_Merging_Tool
             fdlg.RestoreDirectory = true;
             if (fdlg.ShowDialog() == DialogResult.OK)
             {
-                SelectedExcelFiles.Items.Add(fdlg.FileName);
+                SelectedExcel.Items.Add(fdlg.FileName);
             }
         }
 
@@ -41,9 +41,10 @@ namespace Multiple_Excel_Merging_Tool
         {
             // 2007 Office System Driver: Data Connectivity Components.
 
+
             bool headerCollected = false;
 
-            foreach (var items in SelectedExcelFiles.Items)
+            foreach (var items in SelectedExcel.Items)
             {
                 var book = new ExcelQueryFactory(items.ToString());
                 var worksheetsNames = book.GetWorksheetNames().ToList();
@@ -86,7 +87,7 @@ namespace Multiple_Excel_Merging_Tool
             FinalExcelProcess();
 
 
-            ToExcelFile("D:\\Hello.xlsx", "Sheet1");
+            ToExcelFile($"{textBox1.Text}\\MergedFile.xlsx", "Sheet1");
 
             //DownloadExcel();
         }
@@ -127,5 +128,31 @@ namespace Multiple_Excel_Merging_Tool
             }
         }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Create a new instance of FolderBrowserDialog.
+            FolderBrowserDialog folderBrowserDlg = new FolderBrowserDialog();
+            // A new folder button will display in FolderBrowserDialog.
+            folderBrowserDlg.ShowNewFolderButton = true;
+            //Show FolderBrowserDialog
+            DialogResult dlgResult = folderBrowserDlg.ShowDialog();
+            if (dlgResult.Equals(DialogResult.OK))
+            {
+                //Show selected folder path in textbox1.
+                textBox1.Text = folderBrowserDlg.SelectedPath;
+                //Browsing start from root folder.
+                Environment.SpecialFolder rootFolder = folderBrowserDlg.RootFolder;
+            }
+        }
+
+        private void SelectedExcel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
